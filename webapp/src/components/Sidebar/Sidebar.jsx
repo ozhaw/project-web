@@ -48,10 +48,8 @@ class Sidebar extends React.Component {
               <img src={logo} alt="react-logo" />
             </div>
           </a>
-          <a
-            href="https://www.creative-tim.com"
-            className="simple-text logo-normal">
-            Creative Tim
+          <a href="https://www.creative-tim.com" className="simple-text logo-normal">
+            TechLimb
           </a>
         </div>
         <div className="sidebar-wrapper" ref={this.sidebar}>
