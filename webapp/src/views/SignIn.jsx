@@ -44,7 +44,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const responseGoogle = (response) => {
-	let profile = response.Zi.profileObj;
+	console.log(response);
+
+	let profile = response.profileObj;
 
 	console.log(profile);
 };
