@@ -27,4 +27,8 @@ const tbody = [
   }
 ];
 
-export { thead, tbody };
+const createRESTUrl = (url) => {
+  return `http://localhost:8081${url}`;
+};
+
+export { thead, tbody, createRESTUrl };

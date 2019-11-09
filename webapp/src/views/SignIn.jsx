@@ -11,6 +11,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {GoogleLogin} from "react-google-login";
 import FacebookLogin from "react-facebook-login";
+import Notifications from "./Notifications";
+import {authorize, createNewUser} from "../methods/common";
 
 const useStyles = makeStyles(theme => ({
 	'@global': {
@@ -43,20 +45,24 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const responseGoogle = (response) => {
-	console.log(response);
-
-	let profile = response.profileObj;
-
-	console.log(profile);
-};
-
-const responseFacebook = (response) => {
-	console.log(response);
+const auth = (email, password, name, image, isSocial) => {
+	authorize(email, password).then((result) => {
+		sessionStorage.setItem("sessionToken", result);
+		window.location.replace("/admin/dashboard");
+	}, () => {
+		if (isSocial) {
+			createNewUser(email, password, name, image).then(() => {
+				auth(email, password, name, image, isSocial);
+			}, error => {
+				return new Error(error);
+			})
+		}
+	});
 };
 
 export default function SignIn() {
 	const classes = useStyles();
+	const notif = React.createRef();
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -105,18 +111,24 @@ export default function SignIn() {
 							<GoogleLogin
 								clientId="682226085071-mi1itdp22j3qguu7cl3aph3s4s7sqj7g.apps.googleusercontent.com"
 								cssClass={classes.submit}
-								onSuccess={responseGoogle}
-								onFailure={responseGoogle}
+								onSuccess={(response) => auth(response.profileObj.email,
+									response.profileObj.googleId, response.profileObj.name,
+									response.profileObj.imageUrl,
+									true)}
+								onFailure={() => {}}
 								cookiePolicy={'single_host_origin'}/>
 						</Grid>
 						<Grid item className={classes.social}>
 							<FacebookLogin
 								appId="2471928086388329"
-								autoLoad
+								autoLoad={false}
 								fields="name,email,picture"
 								scope="public_profile"
 								icon="fa-facebook"
-								callback={responseFacebook}
+								callback={(response) => auth(response.email,
+									response.id,
+									response.name,
+									response.picture.data.url)}
 							/>
 						</Grid>
 					</Grid>
@@ -129,6 +141,9 @@ export default function SignIn() {
 					</Grid>
 				</form>
 			</div>
+			<>
+				<Notifications type={"error"} place={"br"} ref={notif}/>
+			</>
 		</Container>
 	);
 }
