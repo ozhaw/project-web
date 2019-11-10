@@ -35,7 +35,6 @@ const createNewUser = (email, password, username, photoUrl) => {
                 username: username
             })
         }).then((response) => {
-            alert();
             if (response.ok) {
                 resolve(response.ok);
             } else {

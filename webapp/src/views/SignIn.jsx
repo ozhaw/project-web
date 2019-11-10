@@ -45,6 +45,8 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+const notif = React.createRef();
+
 const auth = (email, password, name, image, isSocial) => {
 	authorize(email, password).then((result) => {
 		sessionStorage.setItem("sessionToken", result);
@@ -54,15 +56,22 @@ const auth = (email, password, name, image, isSocial) => {
 			createNewUser(email, password, name, image).then(() => {
 				auth(email, password, name, image, isSocial);
 			}, error => {
+                notif.current.notify("Unable to add new user");
 				return new Error(error);
 			})
-		}
+		} else {
+            notif.current.notify("Unable to authenticate");
+        }
 	});
 };
 
 export default function SignIn() {
 	const classes = useStyles();
-	const notif = React.createRef();
+
+	const state = {
+	    email: "",
+        password: ""
+    };
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -85,6 +94,7 @@ export default function SignIn() {
 						name="email"
 						autoComplete="email"
 						autoFocus
+                        onChange={(event) => state.email = event.target.value}
 					/>
 					<TextField
 						variant="outlined"
@@ -96,13 +106,15 @@ export default function SignIn() {
 						type="password"
 						id="password"
 						autoComplete="current-password"
+                        onChange={(event) => state.password = event.target.value}
 					/>
 					<Button
-						type="submit"
+						type="button"
 						fullWidth
 						variant="contained"
 						color="primary"
 						className={classes.submit}
+                        onClick={() => { auth(state.email, state.password, null, null, false) }}
 					>
 						Sign In
 					</Button>

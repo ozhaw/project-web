@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {createNewUser} from "../methods/common";
 
 const useStyles = makeStyles(theme => ({
 	'@global': {
@@ -39,6 +40,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
 	const classes = useStyles();
+	const state = {
+		email: "",
+		fname: "",
+		lname: " ",
+		password: ""
+	};
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -65,6 +72,7 @@ export default function SignUp() {
 								id="firstName"
 								label="First Name"
 								autoFocus
+								onChange={(event) => state.fname = event.target.value}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
@@ -76,6 +84,7 @@ export default function SignUp() {
 								label="Last Name"
 								name="lastName"
 								autoComplete="lname"
+								onChange={(event) => state.lname = event.target.value}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -87,6 +96,7 @@ export default function SignUp() {
 								label="Email Address"
 								name="email"
 								autoComplete="email"
+								onChange={(event) => state.email = event.target.value}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -99,15 +109,23 @@ export default function SignUp() {
 								type="password"
 								id="password"
 								autoComplete="current-password"
+								onChange={(event) => state.password = event.target.value}
 							/>
 						</Grid>
 					</Grid>
 					<Button
-						type="submit"
+						type="button"
 						fullWidth
 						variant="contained"
 						color="primary"
 						className={classes.submit}
+						onClick={() => {
+							createNewUser(state.email, state.password, `${state.fname} ${state.lname}`, null).then(() => {
+								window.location.replace("/login");
+							}, error => {
+								return new Error(error);
+							})
+						}}
 					>
 						Sign Up
 					</Button>
