@@ -1,4 +1,4 @@
-import {createRESTUrl} from "../variables/general";
+import {createRESTUrl} from "./general";
 
 const authorize = (email, password) => {
     return new Promise((resolve, reject) => {
@@ -12,8 +12,11 @@ const authorize = (email, password) => {
                 password: password
             })
         }).then((response) => {
-            if (response.ok && response.headers.get("SecurityToken")) {
-                resolve(response.headers.get("SecurityToken"));
+            if (response.ok && response.headers.get("SecurityToken") && response.headers.get("userId")) {
+                resolve({
+                    securityToken: response.headers.get("SecurityToken"),
+                    userId: response.headers.get("userId"),
+                });
             } else {
                 reject();
             }

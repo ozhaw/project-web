@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import {GoogleLogin} from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import Notifications from "./Notifications";
-import {authorize, createNewUser} from "../methods/common";
+import {authorize, createNewUser} from "../variables/common";
 
 const useStyles = makeStyles(theme => ({
 	'@global': {
@@ -49,7 +49,8 @@ const notif = React.createRef();
 
 const auth = (email, password, name, image, isSocial) => {
 	authorize(email, password).then((result) => {
-		sessionStorage.setItem("sessionToken", result);
+		sessionStorage.setItem("sessionToken", result.securityToken);
+        sessionStorage.setItem("userId", result.userId);
 		window.location.replace("/admin/dashboard");
 	}, () => {
 		if (isSocial) {
