@@ -1,45 +1,47 @@
-import React from "react";
+import React, {useState} from "react";
 import {Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Row} from "reactstrap";
 import {Pie} from "react-chartjs-2";
-import LinePeakGraphCard from "./LinePeakGraphCard";
 
-class LinePieGraphCard extends LinePeakGraphCard {
+export default function LinePieGraphCard() {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const updateTime = new Date();
+    const options = {
+        legend: {
+            display: false
+        },
 
-    render() {
-        const updateTime = Math.round((this.updateTime - new Date().getTime()) / 60000);
+        tooltips: {
+            enabled: true
+        }
+    };
 
-        return (
-            <>
-                <Row>
-                    <Col md="4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle tag="h5">{this.props.name}</CardTitle>
-                                <p className="card-category">{this.props.category}</p>
-                            </CardHeader>
-                            <CardBody>
-                                <Pie
-                                    data={this.props.data}
-                                />
-                            </CardBody>
-                            <CardFooter>
-                                /*<div className="legend">
-                                    <i className="fa fa-circle text-primary" /> Opened{" "}
-                                    <i className="fa fa-circle text-warning" /> Read{" "}
-                                    <i className="fa fa-circle text-danger" /> Deleted{" "}
-                                    <i className="fa fa-circle text-gray" /> Unopened
-                                </div>*/
-                                <hr />
-                                <div className="stats">
-                                    <i className="fa fa-history" /> Updated {updateTime} minutes ago
-                                </div>
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                </Row>
-            </>
-        );
-    }
+    const toggle = () => setDropdownOpen(prevState => !prevState);
+    const getLastUpdatedTime = () => Math.round((updateTime - new Date().getTime()) / 60000);
+
+    return (
+        <>
+            <Row>
+                <Col md="4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle tag="h5">{props.name}</CardTitle>
+                            <p className="card-category">{props.category}</p>
+                        </CardHeader>
+                        <CardBody>
+                            <Pie
+                                data={props.data}
+                            />
+                        </CardBody>
+                        <CardFooter>
+                            <hr/>
+                            <div className="stats">
+                                <i className="fa fa-history"/> Updated {getLastUpdatedTime()} minutes ago
+                            </div>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
+        </>
+    );
+
 }
-
-export default LinePieGraphCard;

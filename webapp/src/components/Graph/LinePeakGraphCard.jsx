@@ -1,88 +1,81 @@
-import React from "react";
-import {Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Row} from "reactstrap";
-import {Line} from "react-chartjs-2";
+import React, {useState} from "react";
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Col,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Row
+} from "reactstrap";
+import {Bar} from "react-chartjs-2";
 
-class LinePeakGraphCard extends React.Component {
-    constructor(props) {
-        super(props);
+export default function LinePeakGraphCard(props) {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const updateTime = new Date();
+    const options = {
+        legend: {
+            display: false
+        },
 
-        this.updateTime =  new Date();
+        tooltips: {
+            enabled: true
+        }
+    };
 
-        this.options = {
-            legend: {
-                display: false
-            },
+    const toggle = () => setDropdownOpen(prevState => !prevState);
+    const getLastUpdatedTime = () => Math.round((updateTime - new Date().getTime()) / 60000);
 
-            tooltips: {
-                enabled: false
-            },
-
-            scales: {
-                yAxes: [
-                    {
-                        ticks: {
-                            fontColor: "#9f9f9f",
-                            beginAtZero: false,
-                            maxTicksLimit: 5
-                        },
-                        gridLines: {
-                            drawBorder: false,
-                            zeroLineColor: "#ccc",
-                            color: "rgba(255,255,255,0.05)"
-                        }
-                    }
-                ],
-                xAxes: [
-                    {
-                        barPercentage: 1.6,
-                        gridLines: {
-                            drawBorder: false,
-                            color: "rgba(255,255,255,0.1)",
-                            zeroLineColor: "transparent",
-                            display: false
-                        },
-                        ticks: {
-                            padding: 20,
-                            fontColor: "#9f9f9f"
-                        }
-                    }
-                ]
-            }
-        };
-    }
-
-    render() {
-        const updateTime = Math.round((this.updateTime - new Date().getTime()) / 60000);
-
-        return (
-            <>
-                <Row>
-                    <Col md="12">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle tag="h5">{this.props.name}</CardTitle>
-                                <p className="card-category">{this.props.category}</p>
-                            </CardHeader>
-                            <CardBody>
-                                <Line
-                                    data={this.props.data}
-                                    options={this.options}
-                                    width={400}
-                                    height={100}
-                                />
-                            </CardBody>
-                            <CardFooter>
-                                <hr/>
-                                <div className="stats">
-                                    <i className="fa fa-history"/> Updated {updateTime} minutes ago
-                                </div>
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                </Row>
-            </>
-        );
-    }
+    return (
+        <>
+            <Row>
+                <Col md="12">
+                    <Card>
+                        <CardHeader>
+                            <Row>
+                                <Col>
+                                    <CardTitle tag="h5">{props.name}</CardTitle>
+                                </Col>
+                                {props.dropdownData && props.dropdownData.name && props.dropdownData.data ?
+                                    <Col>
+                                        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                                            <DropdownToggle caret>
+                                                {props.dropdownData.name}
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                {props.dropdownData.data.map(item =>
+                                                    <DropdownItem>
+                                                        <div onClick={() => {props.dropdownCallback(item.value)}}> {item.label}</div>
+                                                    </DropdownItem>
+                                                )}
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </Col> : null
+                                }
+                            </Row>
+                            <p className="card-category">{props.category}</p>
+                        </CardHeader>
+                        <CardBody>
+                            <Bar
+                                data={props.data}
+                                options={options}
+                                width={400}
+                                height={100}
+                            />
+                        </CardBody>
+                        <CardFooter>
+                            <hr/>
+                            <div className="stats">
+                                <i className="fa fa-history"/> Updated {getLastUpdatedTime()} minutes ago
+                            </div>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
+        </>
+    );
 }
-
-export default LinePeakGraphCard;
