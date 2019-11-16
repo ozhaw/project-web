@@ -14,6 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {createRESTUrl} from "../variables/general";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
+import LineDotGraphCard from "../components/Graph/LineDotGraphCard";
 
 const useStyles = makeStyles(theme => ({
 	heading: {
@@ -147,12 +148,10 @@ export default function Dashboard() {
 			labels: labels,
 			datasets: [{
 				borderColor: barColor,
-				backgroundColor: barColor,
 				pointRadius: 1,
 				pointHoverRadius: 1,
 				borderWidth: 3,
-				data: datasets,
-				fill: true
+				data: datasets
 			}]
 		};
 	};
@@ -212,6 +211,35 @@ export default function Dashboard() {
 								                   };
 							                   })
 						                   } : null}
+					/> : (
+						<Grid
+							className={classes.loader}
+							container
+							spacing={0}
+							alignItems="center"
+							justify="center"
+						>
+							<CircularProgress color="secondary" disableShrink/>
+						</Grid>
+					)}
+
+				{localState.deviceInfoDataLoaded ?
+					<LineDotGraphCard name={"Device Information"}
+									   category={"Device state for a period of time"}
+									   data={() => prepareDeviceInfoDataTemplate()}
+									   dropdownCallback={deviceInfoChartCallback}
+									   enableTimeRange
+									   timeCallback={timeRangeCallback}
+									   dropdownData={localState.devicesDataLoaded ?
+										   {
+											   name: "Devices",
+											   data: localState.devicesData.map(item => {
+												   return {
+													   label: item.deviceId,
+													   value: item.id
+												   };
+											   })
+										   } : null}
 					/> : (
 						<Grid
 							className={classes.loader}
