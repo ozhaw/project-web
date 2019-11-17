@@ -1,5 +1,5 @@
 import Dashboard from "views/Dashboard.jsx";
-import TableList from "views/Tables.jsx";
+import Tables from "views/Tables.jsx";
 import UserPage from "views/User.jsx";
 
 const routes = [
@@ -18,10 +18,10 @@ const routes = [
     layout: "/admin"
   },
   {
-    path: "/tables",
-    name: "Table List",
+    path: "/reports",
+    name: "Reports",
     icon: "nc-icon nc-tile-56",
-    component: TableList,
+    component: Tables,
     layout: "/admin"
   }
 ];

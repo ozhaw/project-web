@@ -88,8 +88,6 @@ export default function Dashboard() {
                     state.selectedHealthDeviceIndex = state.devicesData[0].deviceId;
                     state.devicesDataLoaded = true;
 
-                    console.log(state);
-
                     setLocalState(state);
                 }
             });
@@ -209,6 +207,7 @@ export default function Dashboard() {
     };
 
     const barColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+	const lineColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
     const prepareDeviceInfoDataTemplate = () => {
         let combinedData = {};
@@ -248,8 +247,6 @@ export default function Dashboard() {
         let labels = [];
         let datasets = [];
 
-        console.log(combinedData);
-
         for (let key of Object.keys(combinedData)) {
             labels.push(key);
             datasets.push(combinedData[key]);
@@ -258,7 +255,7 @@ export default function Dashboard() {
         return {
             labels: labels,
             datasets: [{
-                borderColor: barColor,
+                borderColor: lineColor,
                 pointRadius: 1,
                 pointHoverRadius: 1,
                 borderWidth: 3,
@@ -366,10 +363,6 @@ export default function Dashboard() {
                     )}
 
             </div>
-            <button onClick={() => {
-                onClick()
-            }}>Click
-            </button>
             <Notifications type={"success"} place={"br"} ref={notif}/>
         </>
     );
