@@ -25,12 +25,25 @@ export default function LineDotGraphCard(props) {
     });
 
     const updateTime = new Date();
+
     const options = {
         legend: {
             display: false
         },
 
-        fill: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value, index, values) {
+                        return props.yLabels[value];
+                    }
+                }
+            }],
+            xAxes: [{
+                display: false
+            }]
+        },
 
         pieceLabel: {
             render: "percentage",
