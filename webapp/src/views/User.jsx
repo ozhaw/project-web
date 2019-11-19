@@ -91,7 +91,10 @@ export default function User() {
                                             <img
                                                 alt={data.username}
                                                 className="avatar border-gray"
-                                                src={data.photoUrl}
+                                                src={data.photoUrl
+                                                        ? "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg"
+                                                        : data.photoUrl
+                                                }
                                             />
                                             <h5 className="title">{data.username}</h5>
                                         </a>
