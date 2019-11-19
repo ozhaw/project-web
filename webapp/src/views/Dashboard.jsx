@@ -82,14 +82,19 @@ export default function Dashboard() {
                 });
             }).then((result) => {
                 let state = {...localState};
-                if (result) {
+                if (result && result.length) {
                     state.devicesData = result.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                     state.selectedDeviceIndex = state.devicesData[0].id;
                     state.selectedHealthDeviceIndex = state.devicesData[0].deviceId;
-                    state.devicesDataLoaded = true;
-
-                    setLocalState(state);
                 }
+                state.devicesDataLoaded = true;
+
+                setLocalState(state);
+            }, () => {
+                let state = {...localState};
+                state.devicesDataLoaded = true;
+
+                setLocalState(state);
             });
         } else {
             if (!localState.deviceInfoDataLoaded) {
@@ -118,17 +123,22 @@ export default function Dashboard() {
                 });
             }).then((result) => {
                 let state = {...localState};
-                if (result) {
+                if (result && result.length) {
                     result.forEach(item => {
                         item.auditDate = new Date(item.auditDate)
                     });
 
                     state.deviceInfoData = result;
-                    state.deviceInfoDataLoaded = true;
                     state.filteredDeviceInfoData = result;
-
-                    setLocalState(state);
                 }
+                state.deviceInfoDataLoaded = true;
+
+                setLocalState(state);
+            }, () => {
+                let state = {...localState};
+                state.deviceInfoDataLoaded = true;
+
+                setLocalState(state);
             });
         }
     };
@@ -151,17 +161,23 @@ export default function Dashboard() {
                 });
             }).then((result) => {
                 let state = {...localState};
-                if (result) {
+                if (result && result.length) {
                     result.forEach(item => {
                         item.auditDate = new Date(item.auditDate)
                     });
 
                     state.healthInfoData = result;
-                    state.healthInfoDataLoaded = true;
                     state.filteredHealthInfoData = result;
-
-                    setLocalState(state);
                 }
+                state.healthInfoDataLoaded = true;
+
+                setLocalState(state);
+            }, () => {
+                let state = {...localState};
+                state.healthInfoDataLoaded = true;
+
+
+                setLocalState(state);
             });
         }
     };
@@ -207,7 +223,7 @@ export default function Dashboard() {
     };
 
     const barColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-	const lineColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    const lineColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
     const prepareDeviceInfoDataTemplate = () => {
         let combinedData = {};
@@ -267,7 +283,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="content">
-                {localState.devicesDataLoaded ?
+                {localState.devicesDataLoaded && localState.devicesData ?
                     <ExpansionPanel className={classes.ePanel}>
                         <ExpansionPanelSummary
                             aria-controls="panel1a-content"
@@ -290,7 +306,7 @@ export default function Dashboard() {
                                 )}
                             </Row>
                         </ExpansionPanelDetails>
-                    </ExpansionPanel> : (
+                    </ExpansionPanel> : localState.devicesDataLoaded ? null : (
                         <Grid
                             className={classes.loader}
                             container
@@ -302,7 +318,7 @@ export default function Dashboard() {
                         </Grid>
                     )}
 
-                {localState.deviceInfoDataLoaded ?
+                {localState.deviceInfoDataLoaded && localState.deviceInfoData ?
                     <LinePeakGraphCard name={"Device Information"}
                                        category={"Device state for a period of time"}
                                        data={() => prepareDeviceInfoDataTemplate()}
@@ -319,7 +335,7 @@ export default function Dashboard() {
                                                    };
                                                })
                                            } : null}
-                    /> : (
+                    /> : localState.deviceInfoDataLoaded ? null : (
                         <Grid
                             className={classes.loader}
                             container
@@ -331,14 +347,14 @@ export default function Dashboard() {
                         </Grid>
                     )}
 
-                {localState.healthInfoDataLoaded ?
+                {localState.healthInfoDataLoaded && localState.healthInfoData ?
                     <LineDotGraphCard name={"Health Information"}
                                       category={"Health statistics for a period of time"}
                                       data={() => prepareHealthInfoDataTemplate()}
                                       dropdownCallback={healthInfoChartCallback}
                                       enableTimeRange
                                       yLabels={getLabels(localState.filteredHealthInfoData,
-										  (item) => item.healthStatus).labels}
+                                          (item) => item.healthStatus).labels}
                                       timeCallback={timeRangeCallbackDotChart}
                                       dropdownData={localState.devicesDataLoaded ?
                                           {
@@ -350,7 +366,7 @@ export default function Dashboard() {
                                                   };
                                               })
                                           } : null}
-                    /> : (
+                    /> : localState.healthInfoDataLoaded ? null : (
                         <Grid
                             className={classes.loader}
                             container
