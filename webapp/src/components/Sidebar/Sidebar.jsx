@@ -42,13 +42,13 @@ class Sidebar extends React.Component {
         data-active-color={this.props.activeColor}>
         <div className="logo">
           <a
-            href="https://www.creative-tim.com"
+            href="/admin/dashboard"
             className="simple-text logo-mini">
             <div className="logo-img">
               <img src={logo} alt="react-logo" />
             </div>
           </a>
-          <a href="https://www.creative-tim.com" className="simple-text logo-normal">
+          <a href="/admin/dashboard" className="simple-text logo-normal">
             TechLimb
           </a>
         </div>

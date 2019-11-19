@@ -62,7 +62,9 @@ export default function Dashboard() {
         filteredHealthInfoData: null
     });
 
-    const notif = React.createRef();
+    const successNotification = React.createRef();
+    const failNotification = React.createRef();
+
     const classes = useStyles();
 
     useEffect(() => {
@@ -91,6 +93,8 @@ export default function Dashboard() {
 
                 setLocalState(state);
             }, () => {
+                failNotification.current.notify("Cannot get device list");
+
                 let state = {...localState};
                 state.devicesDataLoaded = true;
 
@@ -107,6 +111,15 @@ export default function Dashboard() {
     });
 
     const getDeviceDetailedInfo = () => {
+        const defaultBehavior = () => {
+            failNotification.current.notify("Cannot get device detail information");
+
+            let state = {...localState};
+            state.deviceInfoDataLoaded = true;
+
+            setLocalState(state);
+        };
+
         if (localState.selectedDeviceIndex !== -1) {
             new Promise((resolve, reject) => {
                 fetch(createRESTUrl(`/device/api/device/${localState.selectedDeviceIndex}/info`), {
@@ -134,16 +147,22 @@ export default function Dashboard() {
                 state.deviceInfoDataLoaded = true;
 
                 setLocalState(state);
-            }, () => {
-                let state = {...localState};
-                state.deviceInfoDataLoaded = true;
-
-                setLocalState(state);
-            });
+            }, defaultBehavior);
+        } else {
+            defaultBehavior();
         }
     };
 
     const getHealthDetailedInfo = () => {
+        const defaultBehavior = () => {
+            failNotification.current.notify("Cannot get health information");
+
+            let state = {...localState};
+            state.healthInfoDataLoaded = true;
+
+            setLocalState(state);
+        };
+
         if (localState.selectedHealthDeviceIndex) {
             new Promise((resolve, reject) => {
                 fetch(createRESTUrl(`/user/api/user/device/${localState.selectedHealthDeviceIndex}/health`), {
@@ -172,18 +191,10 @@ export default function Dashboard() {
                 state.healthInfoDataLoaded = true;
 
                 setLocalState(state);
-            }, () => {
-                let state = {...localState};
-                state.healthInfoDataLoaded = true;
-
-
-                setLocalState(state);
-            });
+            }, defaultBehavior);
+        } else {
+            defaultBehavior()
         }
-    };
-
-    const onClick = () => {
-        notif.current.notify("Hello!");
     };
 
     const timeRangeCallback = (isValid) => {
@@ -379,7 +390,8 @@ export default function Dashboard() {
                     )}
 
             </div>
-            <Notifications type={"success"} place={"br"} ref={notif}/>
+            <Notifications type={"success"} place={"br"} ref={successNotification}/>
+            <Notifications type={"danger"} place={"br"} ref={failNotification}/>
         </>
     );
 }
