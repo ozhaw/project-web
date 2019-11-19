@@ -91,8 +91,8 @@ export default function User() {
                                             <img
                                                 alt={data.username}
                                                 className="avatar border-gray"
-                                                src={data.photoUrl
-                                                        ? "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg"
+                                                src={!data.photoUrl
+                                                        ? require("assets/img/default-avatar.png")
                                                         : data.photoUrl
                                                 }
                                             />
