@@ -16,6 +16,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import LineDotGraphCard from "../components/Graph/LineDotGraphCard";
 import moment from "moment";
+import {locales} from "../variables/locales";
 
 const useStyles = makeStyles(theme => ({
     heading: {
@@ -93,7 +94,7 @@ export default function Dashboard() {
 
                 setLocalState(state);
             }, () => {
-                failNotification.current.notify("Cannot get device list");
+                failNotification.current.notify(locales("deviceListFetchError"));
 
                 let state = {...localState};
                 state.devicesDataLoaded = true;
@@ -112,7 +113,7 @@ export default function Dashboard() {
 
     const getDeviceDetailedInfo = () => {
         const defaultBehavior = () => {
-            failNotification.current.notify("Cannot get device detail information");
+            failNotification.current.notify(locales("deviceInfoFetchError"));
 
             let state = {...localState};
             state.deviceInfoDataLoaded = true;
@@ -155,7 +156,7 @@ export default function Dashboard() {
 
     const getHealthDetailedInfo = () => {
         const defaultBehavior = () => {
-            failNotification.current.notify("Cannot get health information");
+            failNotification.current.notify(locales("healthInfoFetchError"));
 
             let state = {...localState};
             state.healthInfoDataLoaded = true;
@@ -301,7 +302,7 @@ export default function Dashboard() {
                             id="panel1a-header"
                             expandIcon={<ExpandMoreIcon/>}
                         >
-                            <Typography className={classes.heading}>User`s Devices</Typography>
+                            <Typography className={classes.heading}>{locales("userDevices")}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Row>
@@ -309,7 +310,7 @@ export default function Dashboard() {
                                     <Col>
                                         <DataCard title={item.type}
                                                   value={item.deviceId}
-                                                  footer={"Active"}
+                                                  footer={locales("activeStatus")}
                                                   icon={allIcons["nc-camera-compact"].name}
                                                   iconColor={colors.blue}
                                         />
@@ -330,15 +331,15 @@ export default function Dashboard() {
                     )}
 
                 {localState.deviceInfoDataLoaded && localState.deviceInfoData ?
-                    <LinePeakGraphCard name={"Device Information"}
-                                       category={"Device state for a period of time"}
+                    <LinePeakGraphCard name={locales("deviceInformation")}
+                                       category={locales("deviceInformationCategory")}
                                        data={() => prepareDeviceInfoDataTemplate()}
                                        dropdownCallback={deviceInfoChartCallback}
                                        enableTimeRange
                                        timeCallback={timeRangeCallback}
                                        dropdownData={localState.devicesDataLoaded ?
                                            {
-                                               name: "Devices",
+                                               name: locales("devices"),
                                                data: localState.devicesData.map(item => {
                                                    return {
                                                        label: item.deviceId,
@@ -359,8 +360,8 @@ export default function Dashboard() {
                     )}
 
                 {localState.healthInfoDataLoaded && localState.healthInfoData ?
-                    <LineDotGraphCard name={"Health Information"}
-                                      category={"Health statistics for a period of time"}
+                    <LineDotGraphCard name={locales("healthInformation")}
+                                      category={locales("healthInformationCategory")}
                                       data={() => prepareHealthInfoDataTemplate()}
                                       dropdownCallback={healthInfoChartCallback}
                                       enableTimeRange
@@ -369,7 +370,7 @@ export default function Dashboard() {
                                       timeCallback={timeRangeCallbackDotChart}
                                       dropdownData={localState.devicesDataLoaded ?
                                           {
-                                              name: "Devices",
+                                              name: locales("devices"),
                                               data: localState.devicesData.map(item => {
                                                   return {
                                                       label: item.deviceId,

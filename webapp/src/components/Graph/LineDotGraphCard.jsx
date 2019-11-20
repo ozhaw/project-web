@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import LinePeakGraphCard from "./LinePeakGraphCard";
-import {Bar, Line} from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 import {
     Card,
     CardBody,
@@ -14,9 +13,8 @@ import {
     DropdownToggle,
     Row
 } from "reactstrap";
-import moment from "moment";
-
-const notNegativeAndLess = (value, range) => value >= 0 && value <= range;
+import {dateRanges} from "../../variables/general";
+import {localePlaceholders, locales} from "../../variables/locales";
 
 export default function LineDotGraphCard(props) {
     const [dropdownState, setDropdownState] = useState({
@@ -35,7 +33,7 @@ export default function LineDotGraphCard(props) {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    callback: function(value, index, values) {
+                    callback: function (value, index, values) {
                         return props.yLabels[value];
                     }
                 }
@@ -56,44 +54,6 @@ export default function LineDotGraphCard(props) {
         }
     };
 
-    const dateRanges = [
-        {
-            name: "All time",
-            isValid: (date) => true
-        },
-        {
-            name: "This year",
-            isValid: (date) => moment(new Date()).diff(moment(date), 'years') === 0
-        },
-        {
-            name: "This month",
-            isValid: (date) => moment(new Date()).diff(moment(date), 'months') === 0
-        },
-        {
-            name: "This week",
-            isValid: (date) => moment(new Date()).diff(moment(date), 'weeks') === 0
-        },
-        {
-            name: "This day",
-            isValid: (date) => moment(new Date()).diff(moment(date), 'days') === 0
-        },
-        {
-            name: "This half-day",
-            isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'hours'), 12)
-        },
-        {
-            name: "This hour",
-            isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'hours'), 1)
-        },
-        {
-            name: "30 minutes",
-            isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'minutes'), 30)
-        },
-        {
-            name: "15 minutes",
-            isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'minutes'), 15)
-        }
-    ];
 
     const toggle = () => {
         let state = {...dropdownState};
@@ -141,7 +101,7 @@ export default function LineDotGraphCard(props) {
                                     <Col>
                                         <Dropdown isOpen={dropdownState.timeDropDownOpen} toggle={toggleTime}>
                                             <DropdownToggle caret>
-                                                Time Range
+                                                {locales("timeRange")}
                                             </DropdownToggle>
                                             <DropdownMenu>
                                                 {dateRanges.map(item =>
@@ -169,7 +129,7 @@ export default function LineDotGraphCard(props) {
                         <CardFooter>
                             <hr/>
                             <div className="stats">
-                                <i className="fa fa-history"/> Updated {getLastUpdatedTime()} minutes ago
+                                <i className="fa fa-history"/> {localePlaceholders("lastUpdated", getLastUpdatedTime())}
                             </div>
                         </CardFooter>
                     </Card>

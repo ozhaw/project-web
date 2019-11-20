@@ -1,34 +1,49 @@
-const thead = ["Name", "Country", "City", "Salary"];
-const tbody = [
-  {
-    className: "table-success",
-    data: ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"]
-  },
-  {
-    className: "",
-    data: ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"]
-  },
-  {
-    className: "table-info",
-    data: ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
-  },
-  {
-    className: "",
-    data: ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"]
-  },
-  {
-    className: "table-danger",
-    data: ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"]
-  },
-  { className: "", data: ["Mason Porter", "Chile", "Gloucester", "$78,615"] },
-  {
-    className: "table-warning",
-    data: ["Jon Porter", "Portugal", "Gloucester", "$98,615"]
-  }
-];
+import moment from "moment";
+import {locales} from "./locales";
 
 const createRESTUrl = (url) => {
   return `http://localhost:8080${url}`;
 };
 
-export { thead, tbody, createRESTUrl };
+const dateRanges = [
+  {
+    name: locales("allTime"),
+    isValid: (date) => true
+  },
+  {
+    name: locales("thisYear"),
+    isValid: (date) => moment(new Date()).diff(moment(date), 'years') === 0
+  },
+  {
+    name: locales("thisMonth"),
+    isValid: (date) => moment(new Date()).diff(moment(date), 'months') === 0
+  },
+  {
+    name: locales("thisWeek"),
+    isValid: (date) => moment(new Date()).diff(moment(date), 'weeks') === 0
+  },
+  {
+    name: locales("thisDay"),
+    isValid: (date) => moment(new Date()).diff(moment(date), 'days') === 0
+  },
+  {
+    name: locales("thisHalfDay"),
+    isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'hours'), 12)
+  },
+  {
+    name: locales("thisHour"),
+    isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'hours'), 1)
+  },
+  {
+    name: locales("halfHour"),
+    isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'minutes'), 30)
+  },
+  {
+    name: locales("quarterHour"),
+    isValid: (date) => notNegativeAndLess(moment(new Date()).diff(moment(date), 'minutes'), 15)
+  }
+];
+
+const notNegativeAndLess = (value, range) => value >= 0 && value <= range;
+
+export { createRESTUrl, dateRanges };

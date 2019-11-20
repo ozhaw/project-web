@@ -16,49 +16,49 @@ import SignUp from "./views/SignUp";
 const hist = createBrowserHistory();
 
 const isValid = async () => {
-	 await fetch(createRESTUrl(`/authentication/api/authentication/verify`), {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${sessionStorage.getItem("sessionToken")}`
-		}
-	}).then((result) => {
-		if (result.ok) {
-			ReactDOM.render(
-				<Router history={hist}>
-					<Switch>
-						<Route path="/admin" render={props => <AdminLayout {...props} />}/>
-						<Route path="/login" render={props => <SignIn {...props} />}/>
-						<Route path="/new" render={props => <SignUp {...props} />}/>
-						<Route path="/logout" render={() => {
-							sessionStorage.clear();
-							return <Redirect to="/login"/>;
-						}}/>
-						<Redirect to="/login"/>
-					</Switch>
-				</Router>,
-				document.getElementById("root")
-			);
-		} else {
-			ReactDOM.render(
-				<Router history={hist}>
-					<Switch>
-						<Route path="/admin" render={() => {
-							sessionStorage.clear();
-							return <Redirect to="/login"/>
-						}}/>
-						<Route path="/login" render={props => <SignIn {...props} />}/>
-						<Route path="/new" render={props => <SignUp {...props} />}/>
-						<Route path="/logout" render={() => {
-							sessionStorage.clear();
-							return <Redirect to="/login"/>
-						}}/>
-						<Redirect to="/login"/>
-					</Switch>
-				</Router>,
-				document.getElementById("root")
-			);
-		}
-	 });
+    await fetch(createRESTUrl(`/authentication/api/authentication/verify`), {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem("sessionToken")}`
+        }
+    }).then((result) => {
+        if (result.ok) {
+            ReactDOM.render(
+                <Router history={hist}>
+                    <Switch>
+                        <Route path="/admin" render={props => <AdminLayout {...props} />}/>
+                        <Route path="/login" render={props => <SignIn {...props} />}/>
+                        <Route path="/new" render={props => <SignUp {...props} />}/>
+                        <Route path="/logout" render={() => {
+                            sessionStorage.clear();
+                            return <Redirect to="/login"/>;
+                        }}/>
+                        <Redirect to="/login"/>
+                    </Switch>
+                </Router>,
+                document.getElementById("root")
+            );
+        } else {
+            ReactDOM.render(
+                <Router history={hist}>
+                    <Switch>
+                        <Route path="/admin" render={() => {
+                            sessionStorage.clear();
+                            return <Redirect to="/login"/>
+                        }}/>
+                        <Route path="/login" render={props => <SignIn {...props} />}/>
+                        <Route path="/new" render={props => <SignUp {...props} />}/>
+                        <Route path="/logout" render={() => {
+                            sessionStorage.clear();
+                            return <Redirect to="/login"/>
+                        }}/>
+                        <Redirect to="/login"/>
+                    </Switch>
+                </Router>,
+                document.getElementById("root")
+            );
+        }
+    });
 };
 
 isValid();

@@ -4,6 +4,7 @@ import {Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap
 import {makeStyles} from "@material-ui/core";
 import {createRESTUrl} from "../variables/general";
 import {saveAs} from "file-saver";
+import {locales} from "../variables/locales";
 
 const useStyles = makeStyles(theme => ({
     thead: {
@@ -50,7 +51,7 @@ export default function SimpleTable(props) {
 					<Col>
 						<div className={classes.download}>
 							<div className="stats" onClick={exportData}>
-								<i className="fa fa-download"/> Download CSV
+								<i className="fa fa-download"/> {locales("downloadCSV")}
 							</div>
 						</div>
 					</Col>

@@ -4,6 +4,7 @@ import {Button, Card, CardBody, CardHeader, CardTitle, Col, Form, FormGroup, Inp
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import {createRESTUrl} from "../variables/general";
+import {locales} from "../variables/locales";
 
 export default function User() {
     const [data, setData] = useState(null);
@@ -101,7 +102,7 @@ export default function User() {
                                         <p className="description">{`@${data.username}`}</p>
                                     </div>
                                     <p className="description text-center">
-                                        {`Applied TechLimb on ${new Date().toLocaleDateString("en-US")}`}
+                                        {locales("userAppliedOn")}
                                     </p>
                                 </CardBody>
                             </Card>
@@ -109,18 +110,18 @@ export default function User() {
                         <Col md="8">
                             <Card className="card-user">
                                 <CardHeader>
-                                    <CardTitle tag="h5">Edit Profile</CardTitle>
+                                    <CardTitle tag="h5">{locales("editProfile")}</CardTitle>
                                 </CardHeader>
                                 <CardBody>
                                     <Form>
                                         <Row>
                                             <Col className="pr-1" md="3">
                                                 <FormGroup>
-                                                    <label>Username</label>
+                                                    <label>{locales("username")}</label>
                                                     <Input
                                                         disabled
                                                         defaultValue={data.username}
-                                                        placeholder="Username"
+                                                        placeholder={locales("username")}
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -128,10 +129,10 @@ export default function User() {
                                             <Col className="pl-1" md="4">
                                                 <FormGroup>
                                                     <label htmlFor="exampleInputEmail1">
-                                                        Email address
+                                                        {locales("email")}
                                                     </label>
                                                     <Input
-                                                        placeholder="Email"
+                                                        placeholder={locales("email")}
                                                         type="email"
                                                         disabled
                                                         defaultValue={data.email}
@@ -142,20 +143,20 @@ export default function User() {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <label>First Name</label>
+                                                    <label>{locales("firstName")}</label>
                                                     <Input
                                                         onChange={(event) => setFname(event.target.value)}
-                                                        placeholder="First Name"
+                                                        placeholder={locales("firstName")}
                                                         type="text"
                                                     />
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pl-1" md="6">
                                                 <FormGroup>
-                                                    <label>Last Name</label>
+                                                    <label>{locales("lastName")}</label>
                                                     <Input
                                                         onChange={(event) => setSname(event.target.value)}
-                                                        placeholder="Last Name"
+                                                        placeholder={locales("lastName")}
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -165,10 +166,10 @@ export default function User() {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <label>Photo Link</label>
+                                                    <label>{locales("imageUrl")}</label>
                                                     <Input
                                                         onChange={(event) => setPhotoUrl(event.target.value)}
-                                                        placeholder="Image URL"
+                                                        placeholder={locales("imageUrl")}
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -184,7 +185,7 @@ export default function User() {
                                                     disabled={loading}
                                                     onClick={(event) => updateProfile(event)}
                                                 >
-                                                    Update Profile
+                                                    {locales("updateProfile")}
                                                 </Button>
                                                 {loading && <CircularProgress size={24}/>}
                                             </div>

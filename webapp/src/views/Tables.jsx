@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import moment from "moment";
+import {locales} from "../variables/locales";
 
 const parseDate = (obj) => {
     Object.keys(obj).forEach((key) => {
@@ -140,8 +141,8 @@ export default function Tables() {
                 <Row>
                     <Col md="12">
                         {localState.deviceInfoDataLoaded ?
-                            <SimpleTable title={"Device Information"}
-                                         headers={["Device ID", "Info", "Audit Date"]}
+                            <SimpleTable title={locales("deviceInformation")}
+                                         headers={locales("deviceInformationTableTags")}
                                          data={prepareDeviceInfoData()}
                             /> : (
                                 <Grid
@@ -156,8 +157,8 @@ export default function Tables() {
                             )
                         }
                         {localState.healthInfoDataLoaded ?
-                            <SimpleTable title={"Health Information"}
-										 headers={["Device ID", "Health Status", "Audit Date"]}
+                            <SimpleTable title={locales("healthInformation")}
+										 headers={locales("healthInformationTableTags")}
                                          data={prepareHealthInfoData()}
                             /> : (
                                 <Grid
