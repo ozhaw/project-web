@@ -2,7 +2,7 @@ import moment from "moment";
 import {locales} from "./locales";
 
 const createRESTUrl = (url) => {
-  return `http://localhost:8080${url}`;
+  return `https://julia-gateway.herokuapp.com${url}`;
 };
 
 const dateRanges = [
